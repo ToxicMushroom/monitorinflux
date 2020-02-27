@@ -7,7 +7,7 @@ import me.melijn.monitorflux.objects.WebManager
 import me.melijn.monitorflux.service.Service
 import org.influxdb.dto.Point
 
-class MelijnStatsInfoService (container: Container, private val influxDataSource: InfluxDataSource) :
+class MelijnStatsInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
     Service("melijn_stats", 5, 2) {
 
     private val web = WebManager()
@@ -20,8 +20,8 @@ class MelijnStatsInfoService (container: Container, private val influxDataSource
                 influxDataSource.writePoint(
                     Point
                         .measurement("Bot")
-                        .addField("uptime_millis", 0)
-                        .addField("jvm_uptime_millis", 0)
+                        .addField("uptime_seconds", 0)
+                        .addField("jvm_uptime_seconds", 0)
                         .build()
                 )
                 return@Runnable
@@ -39,8 +39,8 @@ class MelijnStatsInfoService (container: Container, private val influxDataSource
                     .tag("id", botApi.id.toString())
                     .addField("ram_total", serverStat.ramTotal)
                     .addField("ram_usage", serverStat.ramUsage)
-                    .addField("uptime_millis", serverStat.uptime/1000)
-                    .addField("jvm_uptime_millis", botStat.uptime/1000)
+                    .addField("uptime_seconds", serverStat.uptime / 1000)
+                    .addField("jvm_uptime_seconds", botStat.uptime / 1000)
                     .addField("jvm_ram_total", botStat.ramTotal)
                     .addField("jvm_ram_usage", botStat.ramUsage)
                     .addField("cpu_usage", botStat.cpuUsage)
