@@ -3,13 +3,15 @@ package me.melijn.monitorflux.service
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.datasource.InfluxDataSource
 import me.melijn.monitorflux.service.melijn.MelijnShardInfoService
+import me.melijn.monitorflux.service.melijn.MelijnStatsInfoService
 
 class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
 
     private var started = false
 
     private val services = mutableListOf<Service>(
-        MelijnShardInfoService(container, influxDataSource)
+        MelijnShardInfoService(container, influxDataSource),
+        MelijnStatsInfoService(container, influxDataSource)
     )
 
     fun startServices() {

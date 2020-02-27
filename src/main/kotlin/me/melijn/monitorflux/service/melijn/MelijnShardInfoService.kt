@@ -11,7 +11,7 @@ import me.melijn.monitorflux.service.Service
 import org.influxdb.dto.Point
 
 class MelijnShardInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
-    Service("melijn", 5, 3) {
+    Service("melijn_shards", 5, 3) {
 
     private val web = WebManager()
     private val botApi = container.settings.botApi
@@ -19,7 +19,7 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
         try {
             val jsonNode: JsonNode? = web.getJsonNodeFromUrl("http://${botApi.host}:${botApi.port}/shards")
             if (jsonNode == null) {
-                logger.warn("Failed to get melijn stats")
+                logger.warn("Failed to get melijn /shards")
                 return@Runnable
             }
             val shardList: List<Shard> = OBJECT_MAPPER.convertValue(

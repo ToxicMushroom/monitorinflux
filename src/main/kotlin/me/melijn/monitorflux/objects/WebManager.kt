@@ -2,7 +2,6 @@ package me.melijn.monitorflux.objects
 
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.readValue
 import me.melijn.monitorflux.OBJECT_MAPPER
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
@@ -58,7 +57,6 @@ class WebManager {
         obj: Class<T>
     ): T? {
         val response = getResponseFromUrl(url, params, headers)
-        println(response)
         return OBJECT_MAPPER.readValue(response, obj)
     }
 
