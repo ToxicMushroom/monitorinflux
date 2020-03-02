@@ -2,7 +2,8 @@ package me.melijn.monitorflux.objects
 
 data class Settings(
     val database: Database,
-    val botApi: BotApi
+    val botApi: BotApi,
+    val tokens: Tokens
 ) {
     data class Database(
         var db: String,
@@ -17,5 +18,9 @@ data class Settings(
         var port: Int,
         var name: String,
         var id: Long
+    )
+
+    data class Tokens(
+        var dblToken: String
     )
 }

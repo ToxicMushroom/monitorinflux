@@ -9,13 +9,16 @@ import org.influxdb.dto.Point
 import java.util.concurrent.TimeUnit
 
 class DBLInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
-    Service("melijn_votes", 1, 1, TimeUnit.MINUTES) {
+    Service("melijn_votes", 60, 2, TimeUnit.SECONDS) {
 
     private val web = WebManager()
     private val botApi = container.settings.botApi
     override val service: Runnable = Runnable {
         try {
-            val jsonNode: JsonNode? = web.getJsonNodeFromUrl("https://top.gg/api/bots/${container.settings.botApi.id}")
+            val jsonNode: JsonNode? = web.getJsonNodeFromUrl(
+                "https://top.gg/api/bots/${container.settings.botApi.id}",
+                headers = mapOf(Pair("Authorization", container.settings.tokens.dblToken))
+            )
             if (jsonNode == null) {
                 logger.warn("Failed to get dbl/melijn info")
                 return@Runnable
