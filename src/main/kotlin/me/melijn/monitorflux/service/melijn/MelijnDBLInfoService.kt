@@ -8,7 +8,7 @@ import me.melijn.monitorflux.service.Service
 import org.influxdb.dto.Point
 import java.util.concurrent.TimeUnit
 
-class DBLInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
+class MelijnDBLInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
     Service("melijn_votes", 60, 2, TimeUnit.SECONDS) {
 
     private val web = WebManager()

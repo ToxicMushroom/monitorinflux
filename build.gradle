@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.70'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
 }
 
 mainClassName = 'me.melijn.monitorflux.MonitorKt'
@@ -19,29 +19,29 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.3.3'
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.3.5'
 
     // https://mvnrepository.com/artifact/org.influxdb/influxdb-java
-    implementation group: 'org.influxdb', name: 'influxdb-java', version: '2.17'
+    implementation group: 'org.influxdb', name: 'influxdb-java', version: '2.18'
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-jdk8
-    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: '1.3.3'
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: '1.3.5'
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
-    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.4.0'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.5.0'
     implementation group: 'ru.gildor.coroutines', name: 'kotlin-coroutines-okhttp', version: '1.0'
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
-    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.3.70'
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.3.72'
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.3'
 
     // https://github.com/FasterXML/jackson-module-kotlin
-    implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.10.2'
+    implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.10.3'
 }
 
 compileJava.options.encoding = 'UTF-8'

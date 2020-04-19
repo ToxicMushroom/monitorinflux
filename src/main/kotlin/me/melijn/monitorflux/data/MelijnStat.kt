@@ -1,6 +1,6 @@
 package me.melijn.monitorflux.data
 
-data class Stat(
+data class MelijnStat(
     var bot: BotStat,
     var server: ServerStat
 ) {

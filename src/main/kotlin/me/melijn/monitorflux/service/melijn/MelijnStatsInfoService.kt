@@ -1,7 +1,7 @@
 package me.melijn.monitorflux.service.melijn
 
 import me.melijn.monitorflux.Container
-import me.melijn.monitorflux.data.Stat
+import me.melijn.monitorflux.data.MelijnStat
 import me.melijn.monitorflux.datasource.InfluxDataSource
 import me.melijn.monitorflux.objects.WebManager
 import me.melijn.monitorflux.service.Service
@@ -14,8 +14,8 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
     private val botApi = container.settings.botApi
     override val service: Runnable = Runnable {
         try {
-            val stat: Stat? = web.getObjectFromUrl("http://${botApi.host}:${botApi.port}/stats", obj = Stat::class.java)
-            if (stat == null) {
+            val melijnStat: MelijnStat? = web.getObjectFromUrl("http://${botApi.host}:${botApi.port}/stats", obj = MelijnStat::class.java)
+            if (melijnStat == null) {
                 logger.warn("Failed to get melijn /stats")
                 influxDataSource.writePoint(
                     Point
@@ -27,9 +27,9 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
                 return@Runnable
             }
 
-            val serverStat = stat.server
+            val serverStat = melijnStat.server
 
-            val botStat = stat.bot
+            val botStat = melijnStat.bot
 
 
             influxDataSource.writePoint(
