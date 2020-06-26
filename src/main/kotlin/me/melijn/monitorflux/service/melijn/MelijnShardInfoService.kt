@@ -15,6 +15,8 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
 
     private val web = WebManager()
     private val botApi = container.settings.botApi
+    val statusList = mutableListOf<String>()
+
     override val service: Runnable = Runnable {
         try {
             val jsonNode: JsonNode? = web.getJsonNodeFromUrl("http://${botApi.host}:${botApi.port}/shards")
@@ -41,10 +43,11 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
             var musicPlayers = 0
             var queuedTracks = 0
 
+            val map = mutableMapOf<String, Int>()
+
             for (shard in shardList) {
                 pointBuilder
                     .addField("${shard.id}_ping", shard.ping)
-                    .addField("${shard.id}_status", if (shard.status == "CONNECTED") 1 else 0)
                     .addField("${shard.id}_cvcs", shard.connectedVoiceChannels)
                     .addField("${shard.id}_lvcs", shard.listeningVoiceChannels)
                     .addField("${shard.id}_musicplayers", shard.musicPlayers)
@@ -57,6 +60,19 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
                 lvcs += shard.listeningVoiceChannels
                 musicPlayers += shard.musicPlayers
                 queuedTracks += shard.queuedTracks
+                map[shard.status.toLowerCase()] = map.getOrDefault(shard.status.toLowerCase(), 0) + 1
+            }
+
+            for (s in statusList) {
+                map.putIfAbsent(s, 0)
+            }
+
+            for ((status, amount) in map) {
+                if (!statusList.contains(status)) {
+                    statusList.add(status)
+                }
+
+                pointBuilder.addField("shards_$status", amount)
             }
 
             pingMean /= shardSize
@@ -73,7 +89,8 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
                     .build()
             )
         } catch (t: Throwable) {
-            t.printStackTrace()
+            logger.error(t.message ?: "")
+
         }
     }
 }
