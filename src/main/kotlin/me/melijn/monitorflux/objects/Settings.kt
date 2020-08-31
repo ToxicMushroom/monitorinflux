@@ -16,7 +16,6 @@ data class Settings(
 
     data class BotApi(
         var host: String,
-        var port: Int,
         var name: String,
         var id: Long
     )

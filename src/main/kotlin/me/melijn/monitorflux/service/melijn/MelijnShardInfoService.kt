@@ -15,11 +15,22 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
 
     private val web = WebManager()
     private val botApi = container.settings.botApi
-    val statusList = mutableListOf<String>()
+    private val baseUrl = botApi.host
+
+    private val statusList = mutableListOf(
+        "connected",
+        "logging_in",
+        "waiting_to_reconnect",
+        "loading_subsystems",
+        "awaiting_login_confirm",
+        "reconnect_queued",
+        "attempting_reconnect",
+        "disconnected"
+    )
 
     override val service: Runnable = Runnable {
         try {
-            val jsonNode: JsonNode? = web.getJsonNodeFromUrl("http://${botApi.host}:${botApi.port}/shards")
+            val jsonNode: JsonNode? = web.getJsonNodeFromUrl("$baseUrl/shards")
             if (jsonNode == null) {
                 logger.warn("Failed to get melijn /shards")
                 return@Runnable
@@ -44,6 +55,7 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
             var queuedTracks = 0
 
             val map = mutableMapOf<String, Int>()
+            var unavailable = 0
 
             for (shard in shardList) {
                 pointBuilder
@@ -53,6 +65,7 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
                     .addField("${shard.id}_musicplayers", shard.musicPlayers)
                     .addField("${shard.id}_queuedtracks", shard.queuedTracks)
 
+                unavailable += shard.unavailable
                 guilds += shard.guildCount
                 users += shard.userCount
                 pingMean += shard.ping
@@ -80,6 +93,7 @@ class MelijnShardInfoService(container: Container, private val influxDataSource:
             influxDataSource.writePoint(
                 pointBuilder
                     .addField("guilds", guilds)
+                    .addField("unavailable_guilds", unavailable)
                     .addField("users", users)
                     .addField("ping", pingMean)
                     .addField("cvcs", cvcs)

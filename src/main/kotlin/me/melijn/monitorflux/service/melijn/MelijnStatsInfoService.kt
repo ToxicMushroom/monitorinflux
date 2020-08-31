@@ -12,9 +12,11 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
 
     private val web = WebManager()
     private val botApi = container.settings.botApi
+    private val baseUrl = botApi.host
+
     override val service: Runnable = Runnable {
         try {
-            val melijnStat: MelijnStat? = web.getObjectFromUrl("http://${botApi.host}:${botApi.port}/stats", obj = MelijnStat::class.java)
+            val melijnStat: MelijnStat? = web.getObjectFromUrl("$baseUrl/stats", obj = MelijnStat::class.java)
             if (melijnStat == null) {
                 logger.warn("Failed to get melijn /stats")
                 influxDataSource.writePoint(
