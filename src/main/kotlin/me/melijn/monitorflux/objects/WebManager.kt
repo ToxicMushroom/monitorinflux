@@ -2,22 +2,18 @@ package me.melijn.monitorflux.objects
 
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.request.*
 import me.melijn.monitorflux.OBJECT_MAPPER
-import okhttp3.Dispatcher
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.util.concurrent.Executors
 
 
 class WebManager {
 
-    private val httpClient = OkHttpClient()
-        .newBuilder()
-        .dispatcher(Dispatcher(Executors.newSingleThreadExecutor()))
-        .build()
+    private val httpClient = HttpClient(CIO)
 
 
-    fun getResponseFromUrl(
+    private suspend fun getResponseFromUrl(
         url: String,
         params: Map<String, String> = emptyMap(),
         headers: Map<String, String>
@@ -32,25 +28,15 @@ class WebManager {
             )
         }
 
-        val requestBuilder = Request.Builder()
-            .url(fullUrlWithParams)
-            .get()
-
-        for ((key, value) in headers) {
-            requestBuilder.addHeader(key, value)
+        return httpClient.get<String>(fullUrlWithParams) {
+            for ((key, value) in headers) {
+                header(key, value)
+            }
         }
-
-        val request = requestBuilder.build()
-
-        val response = httpClient.newCall(request).execute()
-        val responseBody = response.body?.string()
-        response.close()
-
-        return responseBody
     }
 
 
-    fun <T> getObjectFromUrl(
+    suspend fun <T> getObjectFromUrl(
         url: String,
         params: Map<String, String> = emptyMap(),
         headers: Map<String, String> = emptyMap(),
@@ -61,7 +47,7 @@ class WebManager {
     }
 
 
-    fun getJsonNodeFromUrl(
+    suspend fun getJsonNodeFromUrl(
         url: String,
         params: Map<String, String> = emptyMap(),
         headers: Map<String, String> = emptyMap()
