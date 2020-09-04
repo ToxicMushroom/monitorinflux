@@ -12,7 +12,6 @@ class WebManager {
 
     private val httpClient = HttpClient(CIO)
 
-
     private suspend fun getResponseFromUrl(
         url: String,
         params: Map<String, String> = emptyMap(),

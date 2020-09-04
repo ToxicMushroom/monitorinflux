@@ -2,7 +2,8 @@ package me.melijn.monitorflux.data
 
 data class MelijnStat(
     var bot: BotStat,
-    var server: ServerStat
+    var server: ServerStat,
+    var shards: List<Shard>
 ) {
     data class BotStat(
         var uptime: Long,
