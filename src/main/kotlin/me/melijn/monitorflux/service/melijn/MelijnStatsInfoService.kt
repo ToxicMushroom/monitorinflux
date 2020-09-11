@@ -1,11 +1,16 @@
 package me.melijn.monitorflux.service.melijn
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.data.MelijnStat
 import me.melijn.monitorflux.datasource.InfluxDataSource
 import me.melijn.monitorflux.service.Service
 import me.melijn.monitorflux.utils.RunnableTask
 import org.influxdb.dto.Point
+
+
+val objectMapper = jacksonObjectMapper()
 
 class MelijnStatsInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
     Service("melijn_stats", 5, 2) {
@@ -25,7 +30,10 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
     )
 
     override val service = RunnableTask {
-        val melijnStat: MelijnStat? = container.webManager.getObjectFromUrl("$baseUrl/stats", obj = MelijnStat::class.java)
+        val melijnStat: MelijnStat? = container.webManager.getObjectFromUrl(
+            "$baseUrl/stats",
+            obj = MelijnStat::class.java
+        )
         if (melijnStat == null) {
             logger.warn("Failed to get melijn /stats")
             influxDataSource.writePoint(
@@ -41,11 +49,12 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
         val serverStat = melijnStat.server
 
         val botStat = melijnStat.bot
+        val point = Point
+            .measurement("Bot")
 
 
         influxDataSource.writePoint(
-            Point
-                .measurement("Bot")
+            point
                 .tag("name", botApi.name)
                 .tag("id", botApi.id.toString())
                 .addField("ram_total", serverStat.ramTotal)
@@ -103,13 +112,23 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
             map.putIfAbsent(s, 0)
         }
 
-        for ((status, amount) in map) {
-            if (!statusList.contains(status)) {
-                statusList.add(status)
-            }
-
-            pointBuilder.addField("shards_$status", amount)
+        map.forEach { (eventName, count) ->
+            val event: Point = Point.measurement("shards")
+                .tag("name", eventName)
+                .addField("count", count)
+                .build()
+            influxDataSource.writePoint(event)
         }
+
+        objectMapper
+            .readValue<Map<String, Int>>(melijnStat.events)
+            .forEach { (eventName, count) ->
+                val event: Point = Point.measurement("events")
+                    .tag("name", eventName)
+                    .addField("count", count / ((System.currentTimeMillis() - melijnStat.lastPoint) / 1000.0))
+                    .build()
+                influxDataSource.writePoint(event)
+            }
 
         pingMean /= shardSize
 
