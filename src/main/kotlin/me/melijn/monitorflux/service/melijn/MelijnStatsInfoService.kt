@@ -27,6 +27,7 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
         "awaiting_login_confirmation", // if confirm appears again just add it aswell
         "reconnect_queued",
         "attempting_reconnect",
+        "connecting_to_websocket",
         "disconnected"
     )
 
