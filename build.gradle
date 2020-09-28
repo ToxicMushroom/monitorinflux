@@ -32,7 +32,7 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
     // https://mvnrepository.com/artifact/io.ktor/ktor-client-cio
-    implementation group: 'io.ktor', name: 'ktor', version: '1.4.0'
+    implementation group: 'io.ktor', name: 'ktor', version: '1.4.1'
     implementation group: 'io.ktor', name: 'ktor-client-cio', version: '1.4.1'
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
