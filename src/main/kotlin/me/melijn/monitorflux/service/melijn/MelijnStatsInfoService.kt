@@ -21,6 +21,7 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
     private val statusList = mutableListOf(
         "connected",
         "logging_in",
+        "identifying_session",
         "waiting_to_reconnect",
         "loading_subsystems",
         "attempting_to_reconnect",
