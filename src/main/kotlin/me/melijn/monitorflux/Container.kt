@@ -31,7 +31,7 @@ class Container {
         val dbSettings = settings.database
 
         val influx = influxDB
-        influx.enableBatch(300, 10, TimeUnit.SECONDS)
+        influx.enableBatch(300, 5, TimeUnit.SECONDS)
         influx.setDatabase(dbSettings.db)
     }
 }
