@@ -16,7 +16,7 @@ val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper()
 
 class Container {
 
-    var settings: Settings = OBJECT_MAPPER.readValue(File("config.json"), Settings::class.java)
+    var settings: Settings = Settings.initSettings()
     val webManager = WebManager()
 
     val influxDB: InfluxDB = if (settings.database.user.isEmpty() && settings.database.password.isEmpty()) {
