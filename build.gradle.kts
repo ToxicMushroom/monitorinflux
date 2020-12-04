@@ -61,7 +61,7 @@ tasks {
     }
     withType(KotlinCompile::class) {
         kotlinOptions {
-            jvmTarget = "15"
+            jvmTarget = "14"
         }
     }
 
