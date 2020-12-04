@@ -66,7 +66,8 @@ data class Settings(
                             getInt("dumbhomeapi.port")
                     ),
                     Tokens(
-                            get("dbltoken")
+                            get("dbltoken"),
+                            get("bfdtoken")
                     )
             )
         }
