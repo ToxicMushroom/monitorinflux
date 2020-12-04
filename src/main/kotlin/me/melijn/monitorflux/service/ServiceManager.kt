@@ -2,8 +2,9 @@ package me.melijn.monitorflux.service
 
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.datasource.InfluxDataSource
-import me.melijn.monitorflux.service.melijn.MelijnDBLInfoService
+import me.melijn.monitorflux.service.melijn.MelijnBFDInfoService
 import me.melijn.monitorflux.service.melijn.MelijnStatsInfoService
+import me.melijn.monitorflux.service.melijn.MelijnTOPGGInfoService
 
 class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
 
@@ -11,7 +12,8 @@ class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
 
     private val services: MutableList<Service> = mutableListOf(
         MelijnStatsInfoService(container, influxDataSource),
-        MelijnDBLInfoService(container, influxDataSource),
+        MelijnTOPGGInfoService(container, influxDataSource),
+        MelijnBFDInfoService(container, influxDataSource)
 //        DumbHomeStatsInfoService(container, influxDataSource)
     )
 

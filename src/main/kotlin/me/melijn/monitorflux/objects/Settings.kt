@@ -26,6 +26,7 @@ data class Settings(
     )
 
     data class Tokens(
-        var dblToken: String
+        var dblToken: String,
+        var bfdToken: String
     )
 }
