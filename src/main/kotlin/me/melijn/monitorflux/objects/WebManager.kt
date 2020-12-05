@@ -3,14 +3,14 @@ package me.melijn.monitorflux.objects
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
+import io.ktor.client.engine.okhttp.*
 import io.ktor.client.request.*
 import me.melijn.monitorflux.OBJECT_MAPPER
 
 
 class WebManager {
 
-    private val httpClient = HttpClient(CIO)
+    private val httpClient = HttpClient(OkHttp)
 
     private suspend fun getResponseFromUrl(
         url: String,
@@ -27,10 +27,15 @@ class WebManager {
             )
         }
 
-        return httpClient.get<String>(fullUrlWithParams) {
-            for ((key, value) in headers) {
-                header(key, value)
+        return try {
+            httpClient.get<String>(fullUrlWithParams) {
+                for ((key, value) in headers) {
+                    header(key, value)
+                }
             }
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            null
         }
     }
 
