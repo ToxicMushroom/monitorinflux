@@ -30,7 +30,7 @@ class MelijnDBoatsInfoService(container: Container, private val influxDataSource
 
         influxDataSource.writePoint(
             pointBuilder
-                .addField("monthly_dblcom_points", votes)
+                .addField("monthly_dboats_points", votes)
                 .build()
         )
     }

@@ -8,7 +8,7 @@ import me.melijn.monitorflux.utils.RunnableTask
 import org.influxdb.dto.Point
 import java.util.concurrent.TimeUnit
 
-//https://botsfordiscord.com/api/bot/:id/votes
+// https://botsfordiscord.com/api/bot/:id/votes
 class MelijnBFDInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
     Service("melijn_bfd_votes", 60, 2, TimeUnit.SECONDS) {
 
