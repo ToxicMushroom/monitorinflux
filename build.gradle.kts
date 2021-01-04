@@ -45,7 +45,7 @@ dependencies {
     implementation("io.ktor:ktor-client-okhttp:1.5.0")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.21-2")
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
     implementation("com.fasterxml.jackson.core:jackson-core:2.12.0")
