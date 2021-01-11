@@ -51,7 +51,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:2.12.0")
 
     // https://github.com/FasterXML/jackson-module-kotlin
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1")
 
 }
 
