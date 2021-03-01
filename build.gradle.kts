@@ -41,7 +41,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     // https://mvnrepository.com/artifact/io.ktor/ktor-client-okhttp
-    implementation("io.ktor:ktor:1.5.1")
+    implementation("io.ktor:ktor:1.5.2")
     implementation("io.ktor:ktor-client-okhttp:1.5.2")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
