@@ -48,7 +48,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31")
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    implementation("com.fasterxml.jackson.core:jackson-core:2.12.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.12.2")
 
     // https://github.com/FasterXML/jackson-module-kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1")
