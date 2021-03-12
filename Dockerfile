@@ -9,6 +9,6 @@ FROM openjdk:15-jdk
 WORKDIR /opt/melijn_monitorinflux
 COPY --from=builder ./etc/melijn-monitorinflux/build/libs/ .
 ENTRYPOINT java \
-    -Xmx50M \
+    -Xmx100M \
     -jar \
     ./stats.jar

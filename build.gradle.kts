@@ -34,14 +34,15 @@ dependencies {
     // https://mvnrepository.com/artifact/org.influxdb/influxdb-java
     implementation("org.influxdb:influxdb-java:2.21")
 
-    implementation("io.github.cdimascio:java-dotenv:5.3.1")
+    // https://github.com/cdimascio/dotenv-kotlin
+    implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    // https://mvnrepository.com/artifact/io.ktor/ktor-client-cio
+    // https://mvnrepository.com/artifact/io.ktor/ktor-client-okhttp
     implementation("io.ktor:ktor:1.5.2")
-    implementation("io.ktor:ktor-client-cio:1.5.2")
+    implementation("io.ktor:ktor-client-okhttp:1.5.2")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31")

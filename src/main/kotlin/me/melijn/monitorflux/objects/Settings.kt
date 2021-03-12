@@ -28,7 +28,8 @@ data class Settings(
     )
 
     data class Tokens(
-        var dblToken: String
+        var dblToken: String,
+        var bfdToken: String
     )
 
 
@@ -65,7 +66,8 @@ data class Settings(
                             getInt("dumbhomeapi.port")
                     ),
                     Tokens(
-                            get("dbltoken")
+                            get("dbltoken"),
+                            get("bfdtoken")
                     )
             )
         }
