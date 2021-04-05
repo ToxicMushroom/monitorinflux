@@ -42,7 +42,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.ktor/ktor-client-okhttp
     implementation("io.ktor:ktor:1.5.2")
-    implementation("io.ktor:ktor-client-okhttp:1.5.2")
+    implementation("io.ktor:ktor-client-okhttp:1.5.3")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31")
