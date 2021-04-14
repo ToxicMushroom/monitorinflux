@@ -1,12 +1,13 @@
 package me.melijn.monitorflux.service.melijn
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.data.MelijnStat
+import me.melijn.monitorflux.data.Shard
 import me.melijn.monitorflux.datasource.InfluxDataSource
 import me.melijn.monitorflux.service.Service
 import me.melijn.monitorflux.utils.RunnableTask
+import org.influxdb.dto.BatchPoints
 import org.influxdb.dto.Point
 
 
@@ -14,9 +15,9 @@ val objectMapper = jacksonObjectMapper()
 
 class MelijnStatsInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
     Service("melijn_stats", 5, 2) {
+
     private val botApi = container.settings.botApi
     private val baseUrl = botApi.host
-
 
     private val statusList = mutableListOf(
         "connected",
@@ -34,14 +35,13 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
 
     override val service = RunnableTask {
         val melijnStat: MelijnStat? = container.webManager.getObjectFromUrl(
-            "$baseUrl/stats",
+            "$baseUrl/publicStats",
             obj = MelijnStat::class.java
         )
         if (melijnStat == null) {
-            logger.warn("Failed to get melijn /stats")
+            logger.warn("Failed to get melijn /publicStats")
             influxDataSource.writePoint(
-                Point
-                    .measurement("Bot")
+                Point.measurement("Bot")
                     .addField("uptime_seconds", 0)
                     .addField("jvm_uptime_seconds", 0)
                     .build()
@@ -50,14 +50,10 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
         }
 
         val serverStat = melijnStat.server
-
         val botStat = melijnStat.bot
-        val point = Point
-            .measurement("Bot")
-
 
         influxDataSource.writePoint(
-            point
+            Point.measurement("Bot")
                 .tag("name", botApi.name)
                 .tag("id", botApi.id.toString())
                 .addField("ram_total", serverStat.ramTotal)
@@ -75,10 +71,16 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
 
         // Shards
         val shardList = melijnStat.shards
-        val pointBuilder = Point
-            .measurement("Bot")
-            .tag("name", botApi.name)
-            .tag("id", botApi.id.toString())
+        val valueInfoList = mutableListOf(
+            ValueInfo("ping") { shard -> shard.ping },
+            ValueInfo("cvcs") { shard -> shard.connectedVoiceChannels },
+            ValueInfo("lvcs") { shard -> shard.listeningVoiceChannels },
+            ValueInfo("musicplayers") { shard -> shard.musicPlayers },
+            ValueInfo("queuedtracks") { shard -> shard.queuedTracks }
+        )
+
+        val maxValues = mutableMapOf<String, ShardValue>()
+        val minValues = mutableMapOf<String, ShardValue>()
 
         val shardSize = shardList.size
         var guilds = 0
@@ -93,12 +95,8 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
         var unavailable = 0
 
         for (shard in shardList) {
-            pointBuilder
-                .addField("${shard.id}_ping", shard.ping)
-                .addField("${shard.id}_cvcs", shard.connectedVoiceChannels)
-                .addField("${shard.id}_lvcs", shard.listeningVoiceChannels)
-                .addField("${shard.id}_musicplayers", shard.musicPlayers)
-                .addField("${shard.id}_queuedtracks", shard.queuedTracks)
+            computeComparingValues(shard, valueInfoList, maxValues) { curr, new -> new > curr }
+            computeComparingValues(shard, valueInfoList, minValues) { curr, new -> new < curr }
 
             unavailable += shard.unavailable
             guilds += shard.guildCount
@@ -111,32 +109,26 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
             map[shard.status.toLowerCase()] = map.getOrDefault(shard.status.toLowerCase(), 0) + 1
         }
 
-        for (s in statusList) {
-            map.putIfAbsent(s, 0)
+        for (status in statusList) {
+            map.putIfAbsent(status, 0)
         }
 
+        val batch = BatchPoints.builder()
         map.forEach { (eventName, count) ->
             val event: Point = Point.measurement("shards")
                 .tag("name", eventName)
                 .addField("count", count)
                 .build()
-            influxDataSource.writePoint(event)
+            batch.point(event)
         }
-
-        objectMapper
-            .readValue<Map<String, Int>>(melijnStat.events)
-            .forEach { (eventName, count) ->
-                val event: Point = Point.measurement("events")
-                    .tag("name", eventName)
-                    .addField("count", count / ((System.currentTimeMillis() - melijnStat.lastPoint) / 1000.0))
-                    .build()
-                influxDataSource.writePoint(event)
-            }
+        influxDataSource.writeBatch(batch.build())
 
         pingMean /= shardSize
 
         influxDataSource.writePoint(
-            pointBuilder
+            Point.measurement("Bot")
+                .tag("name", botApi.name)
+                .tag("id", botApi.id.toString())
                 .addField("guilds", guilds)
                 .addField("unavailable_guilds", unavailable)
                 .addField("users", users)
@@ -148,4 +140,21 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
                 .build()
         )
     }
+
+    private fun computeComparingValues(
+        shard: Shard, valueInfoList: List<ValueInfo>,
+        minValues: MutableMap<String, ShardValue>,
+        replacePredicate: (curr: Int, new: Int) -> Boolean
+    ) {
+        for (valueInfo in valueInfoList) {
+            val currMin = minValues[valueInfo.key]?.value
+            val shardValue = valueInfo.computeField(shard)
+            if (currMin == null || replacePredicate(currMin, shardValue)) {
+                minValues[valueInfo.key] = ShardValue(shard.id, shardValue)
+            }
+        }
+    }
+
+    data class ValueInfo(val key: String, val computeField: (Shard) -> Int)
+    data class ShardValue(val shardId: Int, val value: Int)
 }

@@ -10,10 +10,12 @@ class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
 
     private val services: MutableList<Service> = mutableListOf(
         MelijnStatsInfoService(container, influxDataSource),
+        MelijnEventsInfoService(container, influxDataSource),
         MelijnTOPGGInfoService(container, influxDataSource),
         MelijnBFDInfoService(container, influxDataSource),
         MelijnDBLComInfoService(container, influxDataSource),
-        MelijnDBoatsInfoService(container, influxDataSource)
+        MelijnDBoatsInfoService(container, influxDataSource),
+        MelijnCommandsService(container)
     )
 
     fun startServices() {
