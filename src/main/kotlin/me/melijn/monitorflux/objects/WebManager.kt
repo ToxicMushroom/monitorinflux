@@ -12,7 +12,7 @@ class WebManager {
 
     private val httpClient = HttpClient(OkHttp)
 
-    private suspend fun getResponseFromUrl(
+    suspend fun getResponseFromUrl(
         url: String,
         params: Map<String, String> = emptyMap(),
         headers: Map<String, String>
@@ -40,14 +40,13 @@ class WebManager {
     }
 
 
-    suspend fun <T> getObjectFromUrl(
+    suspend inline fun <reified T> getObjectFromUrl(
         url: String,
         params: Map<String, String> = emptyMap(),
-        headers: Map<String, String> = emptyMap(),
-        obj: Class<T>
+        headers: Map<String, String> = emptyMap()
     ): T? {
         val response = getResponseFromUrl(url, params, headers)
-        return OBJECT_MAPPER.readValue(response, obj)
+        return OBJECT_MAPPER.readValue(response, T::class.java)
     }
 
 

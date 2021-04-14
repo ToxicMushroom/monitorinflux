@@ -1,6 +1,5 @@
 package me.melijn.monitorflux.service.melijn
 
-import com.fasterxml.jackson.databind.JsonNode
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.service.Service
 import me.melijn.monitorflux.utils.RunnableTask
@@ -11,16 +10,14 @@ class MelijnCommandsService(container: Container) : Service("melijn_commands", 6
     private val baseUrl = botApi.host
 
     companion object {
-        val map = mutableMapOf<Int, String>()
+        var map = mapOf<Int, String>()
     }
 
     override val service: RunnableTask = RunnableTask {
-        val commands: JsonNode = container.webManager.getJsonNodeFromUrl(
-            "$baseUrl/publicStats"
+        val commands: Map<Int, String> = container.webManager.getObjectFromUrl(
+            "$baseUrl/commandMap"
         ) ?: return@RunnableTask
-        for (index in 0..commands.size()) {
-            val cmd = commands[index]
-            println(cmd.toString())
-        }
+
+        map = commands
     }
 }
