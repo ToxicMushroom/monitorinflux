@@ -10,7 +10,7 @@ import me.melijn.monitorflux.OBJECT_MAPPER
 
 class WebManager {
 
-    private val httpClient = HttpClient(OkHttp)
+    val httpClient = HttpClient(OkHttp)
 
     suspend fun getResponseFromUrl(
         url: String,
@@ -40,7 +40,7 @@ class WebManager {
     }
 
 
-    suspend inline fun <reified T> getObjectFromUrl(
+    suspend inline fun <reified T> getJsonObjectFromUrl(
         url: String,
         params: Map<String, String> = emptyMap(),
         headers: Map<String, String> = emptyMap()
@@ -48,7 +48,6 @@ class WebManager {
         val response = getResponseFromUrl(url, params, headers)
         return OBJECT_MAPPER.readValue(response, T::class.java)
     }
-
 
     suspend fun getJsonNodeFromUrl(
         url: String,

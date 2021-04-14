@@ -35,7 +35,7 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
     )
 
     override val service = RunnableTask {
-        val melijnStat: MelijnStat? = container.webManager.getObjectFromUrl(
+        val melijnStat: MelijnStat? = container.webManager.getJsonObjectFromUrl(
             "$baseUrl/publicStats"
         )
         if (melijnStat == null) {

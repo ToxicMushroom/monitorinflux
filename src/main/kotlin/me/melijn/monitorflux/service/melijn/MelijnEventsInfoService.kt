@@ -16,7 +16,7 @@ class MelijnEventsInfoService(container: Container, private val influxDataSource
     private val baseUrl = botApi.host
 
     override val service = RunnableTask {
-        val melijnStat: MelijnEvents? = container.webManager.getObjectFromUrl(
+        val melijnStat: MelijnEvents? = container.webManager.getJsonObjectFromUrl(
             "$baseUrl/events"
         )
         if (melijnStat == null) {
