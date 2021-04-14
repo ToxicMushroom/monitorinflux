@@ -24,6 +24,7 @@ repositories {
     mavenCentral()
 }
 
+val ktor = "1.5.3"
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
@@ -41,8 +42,9 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     // https://mvnrepository.com/artifact/io.ktor/ktor-client-okhttp
-    implementation("io.ktor:ktor:1.5.3")
-    implementation("io.ktor:ktor-client-okhttp:1.5.3")
+    implementation("io.ktor:ktor:$ktor")
+    implementation("io.ktor:ktor-client-okhttp:$ktor")
+    implementation("io.ktor:ktor-client-jackson:$ktor")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
