@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("application")
     id("com.github.johnrengelman.shadow") version "6.1.0"
-    id("org.jetbrains.kotlin.jvm") version "1.4.30"
+    id("org.jetbrains.kotlin.jvm") version "1.4.32"
 }
 
 application {
@@ -26,10 +26,10 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-jdk8
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.3")
 
     // https://mvnrepository.com/artifact/org.influxdb/influxdb-java
     implementation("org.influxdb:influxdb-java:2.21")
@@ -41,17 +41,17 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     // https://mvnrepository.com/artifact/io.ktor/ktor-client-okhttp
-    implementation("io.ktor:ktor:1.5.1")
-    implementation("io.ktor:ktor-client-okhttp:1.5.1")
+    implementation("io.ktor:ktor:1.5.3")
+    implementation("io.ktor:ktor-client-okhttp:1.5.3")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32")
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    implementation("com.fasterxml.jackson.core:jackson-core:2.12.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.12.3")
 
     // https://github.com/FasterXML/jackson-module-kotlin
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3")
 
 }
 
