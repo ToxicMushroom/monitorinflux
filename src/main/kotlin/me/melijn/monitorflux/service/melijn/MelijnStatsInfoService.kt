@@ -30,7 +30,8 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
         "reconnect_queued",
         "attempting_reconnect",
         "connecting_to_websocket",
-        "disconnected"
+        "disconnected",
+        "shutdown"
     )
 
     override val service = RunnableTask {
