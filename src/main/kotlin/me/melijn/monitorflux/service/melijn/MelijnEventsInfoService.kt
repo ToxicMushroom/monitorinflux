@@ -44,7 +44,7 @@ class MelijnEventsInfoService(container: Container, private val influxDataSource
                 batchBuilder.point(event)
             }
 
-        objectMapper.readValue<List<Pair<Long, Int>>>(melijnStat.highestEntities)
+        objectMapper.readValue<List<Pair<Long, Int>>>(melijnStat.highestGuilds)
             .forEach { (id, uses) ->
                 val event: Point = Point.measurement("top_10_active_entities")
                     .tag("name", id.toString())
