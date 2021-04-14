@@ -36,8 +36,7 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
 
     override val service = RunnableTask {
         val melijnStat: MelijnStat? = container.webManager.getObjectFromUrl(
-            "$baseUrl/publicStats",
-            obj = MelijnStat::class.java
+            "$baseUrl/publicStats"
         )
         if (melijnStat == null) {
             logger.warn("Failed to get melijn /publicStats")
@@ -126,10 +125,21 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
 
         pingMean /= shardSize
 
+        val pointBuilder = Point.measurement("Bot")
+            .tag("name", botApi.name)
+            .tag("id", botApi.id.toString())
+
+        for (minValue in minValues) {
+            pointBuilder.addField("min_${minValue.key}_value", minValue.value.value)
+            pointBuilder.addField("min_${minValue.key}_shard", minValue.value.shardId)
+        }
+        for (maxValue in maxValues) {
+            pointBuilder.addField("max_${maxValue.key}_value", maxValue.value.value)
+            pointBuilder.addField("max_${maxValue.key}_shard", maxValue.value.shardId)
+        }
+
         influxDataSource.writePoint(
-            Point.measurement("Bot")
-                .tag("name", botApi.name)
-                .tag("id", botApi.id.toString())
+            pointBuilder
                 .addField("guilds", guilds)
                 .addField("unavailable_guilds", unavailable)
                 .addField("users", users)

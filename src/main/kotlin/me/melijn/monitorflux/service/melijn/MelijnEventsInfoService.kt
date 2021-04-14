@@ -17,8 +17,7 @@ class MelijnEventsInfoService(container: Container, private val influxDataSource
 
     override val service = RunnableTask {
         val melijnStat: MelijnEvents? = container.webManager.getObjectFromUrl(
-            "$baseUrl/events",
-            obj = MelijnEvents::class.java
+            "$baseUrl/events"
         )
         if (melijnStat == null) {
             logger.warn("Failed to get melijn /events")
