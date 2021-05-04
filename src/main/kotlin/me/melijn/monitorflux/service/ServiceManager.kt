@@ -3,6 +3,10 @@ package me.melijn.monitorflux.service
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.datasource.InfluxDataSource
 import me.melijn.monitorflux.service.melijn.*
+import me.melijn.monitorflux.service.melijn.botlists.MelijnBFDInfoService
+import me.melijn.monitorflux.service.melijn.botlists.MelijnDBLComInfoService
+import me.melijn.monitorflux.service.melijn.botlists.MelijnDBoatsInfoService
+import me.melijn.monitorflux.service.melijn.botlists.MelijnTOPGGInfoService
 
 class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
 

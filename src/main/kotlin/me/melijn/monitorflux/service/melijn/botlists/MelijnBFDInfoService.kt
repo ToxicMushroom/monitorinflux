@@ -1,4 +1,4 @@
-package me.melijn.monitorflux.service.melijn
+package me.melijn.monitorflux.service.melijn.botlists
 
 import com.fasterxml.jackson.databind.JsonNode
 import me.melijn.monitorflux.Container

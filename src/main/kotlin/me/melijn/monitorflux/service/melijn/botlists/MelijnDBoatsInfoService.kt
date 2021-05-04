@@ -1,4 +1,4 @@
-package me.melijn.monitorflux.service.melijn
+package me.melijn.monitorflux.service.melijn.botlists
 
 import com.fasterxml.jackson.databind.JsonNode
 import me.melijn.monitorflux.Container
@@ -8,22 +8,21 @@ import me.melijn.monitorflux.utils.RunnableTask
 import org.influxdb.dto.Point
 import java.util.concurrent.TimeUnit
 
-class MelijnTOPGGInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
-    Service("melijn_topgg_votes", 60, 2, TimeUnit.SECONDS) {
+// https://discord.boats/api/bot/:id
+class MelijnDBoatsInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
+    Service("melijn_dboats_votes", 60, 2, TimeUnit.SECONDS) {
 
     private val botApi = container.settings.botApi
     override val service = RunnableTask {
         val jsonNode: JsonNode? = container.webManager.getJsonNodeFromUrl(
-            "https://top.gg/api/bots/${container.settings.botApi.id}",
-            headers = mapOf(Pair("Authorization", container.settings.tokens.dblToken))
+            "https://discord.boats/api/bot/${container.settings.botApi.id}"
         )
         if (jsonNode == null) {
-            logger.warn("Failed to get dbl/melijn info")
+            logger.warn("Failed to get dboats/melijn info")
             return@RunnableTask
         }
 
-        val votes = jsonNode.get("monthlyPoints").intValue()
-        val totalVotes = jsonNode.get("points").intValue()
+        val votes = jsonNode.get("bot_vote_count").intValue()
         val pointBuilder = Point
             .measurement("Bot")
             .tag("name", botApi.name)
@@ -31,8 +30,7 @@ class MelijnTOPGGInfoService(container: Container, private val influxDataSource:
 
         influxDataSource.writePoint(
             pointBuilder
-                .addField("monthly_points", votes)
-                .addField("total_points", totalVotes)
+                .addField("monthly_dboats_points", votes)
                 .build()
         )
     }
