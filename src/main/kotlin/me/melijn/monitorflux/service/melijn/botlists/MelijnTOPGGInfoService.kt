@@ -15,7 +15,7 @@ class MelijnTOPGGInfoService(container: Container, private val influxDataSource:
     override val service = RunnableTask {
         val jsonNode: JsonNode? = container.webManager.getJsonNodeFromUrl(
             "https://top.gg/api/bots/${container.settings.botApi.id}",
-            headers = mapOf(Pair("Authorization", container.settings.tokens.dblToken))
+            headers = mapOf(Pair("Authorization", container.settings.tokens.topDotGG))
         )
         if (jsonNode == null) {
             logger.warn("Failed to get dbl/melijn info")

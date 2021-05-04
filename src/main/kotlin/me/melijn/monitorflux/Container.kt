@@ -4,6 +4,7 @@ package me.melijn.monitorflux
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import me.melijn.monitorflux.data.MelijnStat
 import me.melijn.monitorflux.objects.Settings
 import me.melijn.monitorflux.objects.WebManager
 import org.influxdb.InfluxDB
@@ -17,6 +18,7 @@ val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper()
 class Container {
 
     var settings: Settings = Settings.initSettings()
+
     val webManager = WebManager()
 
     val influxDB: InfluxDB = if (settings.database.user.isEmpty() && settings.database.password.isEmpty()) {

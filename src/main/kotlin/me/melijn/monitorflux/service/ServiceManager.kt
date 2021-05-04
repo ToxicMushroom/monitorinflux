@@ -2,11 +2,13 @@ package me.melijn.monitorflux.service
 
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.datasource.InfluxDataSource
+import me.melijn.monitorflux.objects.BotListApi
 import me.melijn.monitorflux.service.melijn.*
 import me.melijn.monitorflux.service.melijn.botlists.MelijnBFDInfoService
 import me.melijn.monitorflux.service.melijn.botlists.MelijnDBLComInfoService
 import me.melijn.monitorflux.service.melijn.botlists.MelijnDBoatsInfoService
 import me.melijn.monitorflux.service.melijn.botlists.MelijnTOPGGInfoService
+import me.melijn.monitorflux.service.statsposting.StatsService
 
 class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
 
@@ -19,7 +21,8 @@ class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
         MelijnBFDInfoService(container, influxDataSource),
         MelijnDBLComInfoService(container, influxDataSource),
         MelijnDBoatsInfoService(container, influxDataSource),
-        MelijnCommandsService(container)
+        MelijnCommandsService(container),
+        StatsService(BotListApi(container.webManager.httpClient, container.settings))
     )
 
     fun startServices() {

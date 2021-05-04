@@ -1,20 +1,23 @@
 package me.melijn.monitorflux.service.melijn
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import me.melijn.monitorflux.utils.RunnableTask
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.data.MelijnStat
 import me.melijn.monitorflux.data.Shard
 import me.melijn.monitorflux.datasource.InfluxDataSource
 import me.melijn.monitorflux.service.Service
-import me.melijn.monitorflux.utils.RunnableTask
 import org.influxdb.dto.BatchPoints
 import org.influxdb.dto.Point
-
 
 val objectMapper = jacksonObjectMapper()
 
 class MelijnStatsInfoService(container: Container, private val influxDataSource: InfluxDataSource) :
     Service("melijn_stats", 5, 2) {
+
+    companion object {
+        var melijnStat: MelijnStat? = null
+    }
 
     private val botApi = container.settings.botApi
     private val baseUrl = botApi.host
@@ -35,10 +38,10 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
     )
 
     override val service = RunnableTask {
-        val melijnStat: MelijnStat? = container.webManager.getJsonObjectFromUrl(
+        val temp: MelijnStat? = container.webManager.getJsonObjectFromUrl(
             "$baseUrl/publicStats"
         )
-        if (melijnStat == null) {
+        if (temp == null) {
             logger.warn("Failed to get melijn /publicStats")
             influxDataSource.writePoint(
                 Point.measurement("Bot")
@@ -48,9 +51,10 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
             )
             return@RunnableTask
         }
+        melijnStat = temp
 
-        val serverStat = melijnStat.server
-        val botStat = melijnStat.bot
+        val serverStat = temp.server
+        val botStat = temp.bot
 
         influxDataSource.writePoint(
             Point.measurement("Bot")
@@ -70,7 +74,7 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
 
 
         // Shards
-        val shardList = melijnStat.shards
+        val shardList = temp.shards
         val valueInfoList = mutableListOf(
             ValueInfo("ping") { shard -> shard.ping },
             ValueInfo("cvcs") { shard -> shard.connectedVoiceChannels },

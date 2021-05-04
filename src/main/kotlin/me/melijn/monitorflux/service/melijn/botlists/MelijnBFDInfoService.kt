@@ -16,7 +16,7 @@ class MelijnBFDInfoService(container: Container, private val influxDataSource: I
     override val service = RunnableTask {
         val jsonNode: JsonNode? = container.webManager.getJsonNodeFromUrl(
             "https://botsfordiscord.com/api/bot/${container.settings.botApi.id}/votes",
-            headers = mapOf(Pair("Authorization", container.settings.tokens.bfdToken))
+            headers = mapOf(Pair("Authorization", container.settings.tokens.botsForDiscordCom))
         )
         if (jsonNode == null) {
             logger.warn("Failed to get bfd/melijn info")

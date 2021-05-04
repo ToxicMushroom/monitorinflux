@@ -22,8 +22,13 @@ data class Settings(
     )
 
     data class Tokens(
-        var dblToken: String,
-        var bfdToken: String
+        var topDotGG: String,
+        var botsOnDiscordXYZ: String,
+        var botlistSpace: String,
+        var discordBotListCom: String,
+        var discordBotsGG: String,
+        var botsForDiscordCom: String,
+        var discordBoats: String
     )
 
     companion object {
@@ -55,8 +60,13 @@ data class Settings(
                     getLong("botapi.id")
                 ),
                 Tokens(
-                    get("dbltoken"),
-                    get("bfdtoken")
+                    get("token.topDotGG"),
+                    get("token.botsOnDiscordXYZ"),
+                    get("token.botListSpace"),
+                    get("token.discordBotListCom"),
+                    get("token.discordBotsGG"),
+                    get("token.botsForDiscordCom"),
+                    get("token.discordBoats")
                 )
             )
         }
