@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.5.0"
 }
 
-application.mainClass.set("me.melijn.monitorinflux.MonitorKt")
+application.mainClass.set("me.melijn.monitorflux.Monitor")
 group = "me.melijn.monitorflux"
 version = "1.0.0"
 
@@ -61,7 +61,7 @@ tasks {
     }
     withType(KotlinCompile::class) {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_15.toString()
+            jvmTarget = "15"
         }
     }
 
