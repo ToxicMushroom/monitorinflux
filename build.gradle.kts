@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.5.0"
 }
 
-application.mainClass.set("me.melijn.monitorflux.Monitor")
+application.mainClass.set("me.melijn.monitorflux.MonitorKt")
 group = "me.melijn.monitorflux"
 version = "1.0.0"
 
