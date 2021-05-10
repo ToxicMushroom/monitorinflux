@@ -110,7 +110,7 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
             lvcs += shard.listeningVoiceChannels
             musicPlayers += shard.musicPlayers
             queuedTracks += shard.queuedTracks
-            map[shard.status.toLowerCase()] = map.getOrDefault(shard.status.toLowerCase(), 0) + 1
+            map[shard.status.lowercase()] = map.getOrDefault(shard.status.lowercase(), 0) + 1
         }
 
         for (status in statusList) {
