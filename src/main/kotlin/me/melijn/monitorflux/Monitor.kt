@@ -13,6 +13,6 @@ class Monitor {
     }
 }
 
-fun main() {
+fun main(args: Array<String>) {
     Monitor()
 }
