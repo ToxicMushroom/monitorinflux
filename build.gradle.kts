@@ -22,7 +22,8 @@ repositories {
 
 val ktor = "1.5.4"
 val kotlin = "1.5.0"
-val kotlinX = "1.5.0-RC"
+val kotlinX = "1.5.0"
+
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinX")
