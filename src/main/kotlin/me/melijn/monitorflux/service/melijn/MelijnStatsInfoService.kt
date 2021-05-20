@@ -1,12 +1,12 @@
 package me.melijn.monitorflux.service.melijn
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import me.melijn.monitorflux.utils.RunnableTask
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.data.MelijnStat
 import me.melijn.monitorflux.data.Shard
 import me.melijn.monitorflux.datasource.InfluxDataSource
 import me.melijn.monitorflux.service.Service
+import me.melijn.monitorflux.utils.RunnableTask
 import org.influxdb.dto.BatchPoints
 import org.influxdb.dto.Point
 
@@ -34,7 +34,8 @@ class MelijnStatsInfoService(container: Container, private val influxDataSource:
         "attempting_reconnect",
         "connecting_to_websocket",
         "disconnected",
-        "shutdown"
+        "shutdown",
+        "shutting_down"
     )
 
     override val service = RunnableTask {
