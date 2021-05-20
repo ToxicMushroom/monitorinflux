@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.*
@@ -24,7 +25,7 @@ class WebManager {
             serializer = JacksonSerializer(objectMapper)
         }
         install(UserAgent) {
-            agent = "Melijn / 2.0.8 Discord bot"
+            agent = "Melijn / 1.0.0 Influxmonitor"
         }
     }
 
@@ -61,8 +62,8 @@ class WebManager {
         params: Map<String, String> = emptyMap(),
         headers: Map<String, String> = emptyMap()
     ): T? {
-        val response = getResponseFromUrl(url, params, headers)
-        return OBJECT_MAPPER.readValue(response, T::class.java)
+        val response = getResponseFromUrl(url, params, headers) ?: return null
+        return OBJECT_MAPPER.readValue<T>(response)
     }
 
     suspend fun getJsonNodeFromUrl(
