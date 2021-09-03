@@ -3,6 +3,7 @@ package me.melijn.monitorflux.service.melijn.botlists
 import com.fasterxml.jackson.databind.JsonNode
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.datasource.InfluxDataSource
+import me.melijn.monitorflux.objects.DISCORD_BOATS
 import me.melijn.monitorflux.service.Service
 import me.melijn.monitorflux.utils.RunnableTask
 import org.influxdb.dto.Point
@@ -15,7 +16,7 @@ class MelijnDBoatsInfoService(container: Container, private val influxDataSource
     private val botApi = container.settings.botApi
     override val service = RunnableTask {
         val jsonNode: JsonNode? = container.webManager.getJsonNodeFromUrl(
-            "https://discord.boats/api/bot/${container.settings.botApi.id}"
+            "${DISCORD_BOATS}/api/bot/${container.settings.botApi.id}"
         )
         if (jsonNode == null) {
             logger.warn("Failed to get dboats/melijn info")

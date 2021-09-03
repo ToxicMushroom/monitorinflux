@@ -3,6 +3,7 @@ package me.melijn.monitorflux.service.melijn.botlists
 import com.fasterxml.jackson.databind.JsonNode
 import me.melijn.monitorflux.Container
 import me.melijn.monitorflux.datasource.InfluxDataSource
+import me.melijn.monitorflux.objects.TOP_GG_URL
 import me.melijn.monitorflux.service.Service
 import me.melijn.monitorflux.utils.RunnableTask
 import org.influxdb.dto.Point
@@ -14,7 +15,7 @@ class MelijnTOPGGInfoService(container: Container, private val influxDataSource:
     private val botApi = container.settings.botApi
     override val service = RunnableTask {
         val jsonNode: JsonNode? = container.webManager.getJsonNodeFromUrl(
-            "https://top.gg/api/bots/${container.settings.botApi.id}",
+            "${TOP_GG_URL}/api/bots/${container.settings.botApi.id}",
             headers = mapOf(Pair("Authorization", container.settings.tokens.topDotGG))
         )
         if (jsonNode == null) {

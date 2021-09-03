@@ -1,9 +1,9 @@
 package me.melijn.monitorflux.service.statsposting
 
-import me.melijn.monitorflux.utils.RunnableTask
 import me.melijn.monitorflux.objects.BotListApi
 import me.melijn.monitorflux.service.Service
 import me.melijn.monitorflux.service.melijn.MelijnStatsInfoService
+import me.melijn.monitorflux.utils.RunnableTask
 import java.util.concurrent.TimeUnit
 
 class StatsService(
@@ -26,7 +26,7 @@ class StatsService(
             botListApi.updateBotlistSpace(guildArray) // 15s ratelimit
             botListApi.updateDiscordBotListCom(guildCount, voice) // no
             botListApi.updateDiscordBotsGG(guildCount, melijnStat.shards.size.toLong()) // 0.05s ratelimit
-            botListApi.updateBotsForDiscordCom(guildCount) // no
+            botListApi.updateDiscordsCom(guildCount) // no
             botListApi.updateDiscordBoats(guildCount) // 1s
 
             lastGuilds = guildCount

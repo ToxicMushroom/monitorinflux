@@ -27,7 +27,7 @@ data class Settings(
         var botlistSpace: String,
         var discordBotListCom: String,
         var discordBotsGG: String,
-        var botsForDiscordCom: String,
+        var discordsCom: String,
         var discordBoats: String
     )
 
@@ -65,7 +65,7 @@ data class Settings(
                     get("token.botListSpace"),
                     get("token.discordBotListCom"),
                     get("token.discordBotsGG"),
-                    get("token.botsForDiscordCom"),
+                    get("token.discordsCom"),
                     get("token.discordBoats")
                 )
             )

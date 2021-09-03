@@ -8,8 +8,8 @@ import io.ktor.content.*
 import io.ktor.http.*
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.TimeoutCancellationException
-import me.melijn.monitorflux.utils.TaskManager
 import me.melijn.monitorflux.service.melijn.objectMapper
+import me.melijn.monitorflux.utils.TaskManager
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -18,7 +18,7 @@ const val BOTS_ON_DISCORD_XYZ_URL = "https://bots.ondiscord.xyz"
 const val BOTLIST_SPACE = "https://api.botlist.space"
 const val DISCORD_BOT_LIST_COM = "https://discordbotlist.com"
 const val DISCORD_BOTS_GG = "https://discord.bots.gg"
-const val BOTS_FOR_DISCORD_COM = "https://botsfordiscord.com"
+const val DISCORDS_COM = "https://discords.com"
 const val DISCORD_BOATS = "https://discord.boats"
 
 class BotListApi(private val httpClient: HttpClient, val settings: Settings) {
@@ -130,9 +130,9 @@ class BotListApi(private val httpClient: HttpClient, val settings: Settings) {
         }
     }
 
-    fun updateBotsForDiscordCom(servers: Long) {
-        val token = settings.tokens.botsForDiscordCom
-        val url = "$BOTS_FOR_DISCORD_COM/api/bot/${settings.botApi.id}"
+    fun updateDiscordsCom(servers: Long) {
+        val token = settings.tokens.discordsCom
+        val url = "$DISCORDS_COM/bots/api/bot/${settings.botApi.id}"
         if (token.isBlank()) return
         TaskManager.asyncIgnoreEx {
             val body = objectMapper.createObjectNode()

@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("application")
     id("com.github.johnrengelman.shadow") version "7.0.0"
-    kotlin("jvm") version "1.5.0"
+    kotlin("jvm") version "1.5.30"
 }
 
 application.mainClass.set("me.melijn.monitorflux.MonitorKt")
@@ -20,9 +20,9 @@ repositories {
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
 }
 
-val ktor = "1.5.4"
-val kotlin = "1.5.0"
-val kotlinX = "1.5.0-RC"
+val ktor = "1.6.3"
+val kotlin = "1.5.30"
+val kotlinX = "1.5.1"
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinX")
@@ -37,7 +37,7 @@ dependencies {
     implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("ch.qos.logback:logback-classic:1.2.5")
 
     // https://mvnrepository.com/artifact/io.ktor/ktor-client-okhttp
     implementation("io.ktor:ktor:$ktor")
@@ -48,10 +48,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin")
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    implementation("com.fasterxml.jackson.core:jackson-core:2.12.3")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.12.5")
 
     // https://github.com/FasterXML/jackson-module-kotlin
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.5")
 
 }
 

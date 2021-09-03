@@ -12,7 +12,6 @@ import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import me.melijn.monitorflux.OBJECT_MAPPER
 
-
 class WebManager {
 
     private val objectMapper: ObjectMapper = jacksonObjectMapper()
