@@ -21,7 +21,7 @@ class MelijnRatelimitingService(
             headers = mapOf("Authorization" to container.settings.tokens.melijnBackend)
         )
         if (melijnStat == null) {
-            logger.warn("Failed to get melijn /ratelimit")
+            logger.warn("Failed to get melijn /ratelimit header: ${container.settings.tokens.melijnBackend}")
             return@RunnableTask
         }
 
