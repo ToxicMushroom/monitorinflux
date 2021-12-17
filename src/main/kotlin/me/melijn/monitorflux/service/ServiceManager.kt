@@ -21,8 +21,9 @@ class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
         MelijnBFDInfoService(container, influxDataSource),
         MelijnDBLComInfoService(container, influxDataSource),
         MelijnDBoatsInfoService(container, influxDataSource),
+        MelijnRatelimitingService(container, influxDataSource),
         MelijnCommandsService(container),
-        StatsService(BotListApi(container.webManager.httpClient, container.settings))
+        StatsService(BotListApi(container.webManager.httpClient, container.settings)),
     )
 
     fun startServices() {
