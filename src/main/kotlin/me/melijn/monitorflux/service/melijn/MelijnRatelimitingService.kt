@@ -17,7 +17,8 @@ class MelijnRatelimitingService(
     private val baseUrl = botApi.host
     override val service: RunnableTask = RunnableTask {
         val melijnStat = container.webManager.getJsonNodeFromUrl(
-            "$baseUrl/ratelimit"
+            "$baseUrl/ratelimit",
+            headers = mapOf("Authorization" to container.settings.tokens.melijnBackend)
         )
         if (melijnStat == null) {
             logger.warn("Failed to get melijn /ratelimit")
@@ -31,7 +32,7 @@ class MelijnRatelimitingService(
         botRouteCounts.forEach { (route, statusses) ->
             statusses.forEach { (status, count) ->
                 batchBuilder.point(
-                    Point.measurement("ratelimit-path")
+                    Point.measurement("ratelimit_path")
                         .tag(route, status.toString())
                         .tag("status", status.toString())
                         .addField("count", count)
@@ -41,7 +42,7 @@ class MelijnRatelimitingService(
         }
         botCounts.forEach { (status, count) ->
             batchBuilder.point(
-                Point.measurement("ratelimit-code")
+                Point.measurement("ratelimit_code")
                     .addField("$status", count)
                     .build()
             )

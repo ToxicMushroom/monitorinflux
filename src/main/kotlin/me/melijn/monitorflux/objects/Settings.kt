@@ -28,7 +28,8 @@ data class Settings(
         var discordBotListCom: String,
         var discordBotsGG: String,
         var discordsCom: String,
-        var discordBoats: String
+        var discordBoats: String,
+        var melijnBackend: String,
     )
 
     companion object {
@@ -66,7 +67,8 @@ data class Settings(
                     get("token.discordBotListCom"),
                     get("token.discordBotsGG"),
                     get("token.discordsCom"),
-                    get("token.discordBoats")
+                    get("token.discordsCom"),
+                    get("token.melijnBackend")
                 )
             )
         }
