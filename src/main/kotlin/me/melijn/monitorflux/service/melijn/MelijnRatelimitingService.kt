@@ -25,29 +25,34 @@ class MelijnRatelimitingService(
             return@RunnableTask
         }
 
-        val botCounts = objectMapper.readValue<Map<Int, Int>>(melijnStat["botCounts"].asText())
-        val botRouteCounts = objectMapper.readValue<Map<String, MutableMap<Int, Int>>>(melijnStat["botRouteCounts"].asText())
+        try {
+            val botCounts = objectMapper.readValue<Map<Int, Int>>(melijnStat["botCounts"].asText())
+            val botRouteCounts =
+                objectMapper.readValue<Map<String, MutableMap<Int, Int>>>(melijnStat["botRouteCounts"].asText())
 
-        val batchBuilder = BatchPoints.builder()
-        botRouteCounts.forEach { (route, statusses) ->
-            statusses.forEach { (status, count) ->
+            val batchBuilder = BatchPoints.builder()
+            botRouteCounts.forEach { (route, statusses) ->
+                statusses.forEach { (status, count) ->
+                    batchBuilder.point(
+                        Point.measurement("ratelimit_path")
+                            .tag(route, status.toString())
+                            .tag("status", status.toString())
+                            .addField("count", count)
+                            .build()
+                    )
+                }
+            }
+            botCounts.forEach { (status, count) ->
                 batchBuilder.point(
-                    Point.measurement("ratelimit_path")
-                        .tag(route, status.toString())
-                        .tag("status", status.toString())
-                        .addField("count", count)
+                    Point.measurement("ratelimit_code")
+                        .addField("$status", count)
                         .build()
                 )
             }
-        }
-        botCounts.forEach { (status, count) ->
-            batchBuilder.point(
-                Point.measurement("ratelimit_code")
-                    .addField("$status", count)
-                    .build()
-            )
-        }
 
-        influxDataSource.writeBatch(batchBuilder.build())
+            influxDataSource.writeBatch(batchBuilder.build())
+        } catch (t: Throwable) {
+            logger.info(melijnStat.toString())
+        }
     }
 }
