@@ -20,7 +20,6 @@ class MelijnRatelimitingService(
             "$baseUrl/ratelimit",
             headers = mapOf("Authorization" to container.settings.tokens.melijnBackend)
         )
-        logger.info("header: ${container.settings.tokens.melijnBackend}")
         if (melijnStat == null) {
             logger.warn("Failed to get melijn /ratelimit")
             return@RunnableTask
@@ -54,6 +53,7 @@ class MelijnRatelimitingService(
             influxDataSource.writeBatch(batchBuilder.build())
         } catch (t: Throwable) {
             logger.info(melijnStat.toString())
+            t.printStackTrace()
         }
     }
 }
