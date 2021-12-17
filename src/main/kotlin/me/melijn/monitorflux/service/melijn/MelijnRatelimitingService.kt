@@ -36,7 +36,7 @@ class MelijnRatelimitingService(
                 statusses.forEach { (status, count) ->
                     batchBuilder.point(
                         Point.measurement("ratelimit_path")
-                            .tag(route, status.toString())
+                            .tag("route", route)
                             .tag("status", status.toString())
                             .addField("count", count)
                             .build()
