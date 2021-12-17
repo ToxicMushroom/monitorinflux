@@ -16,10 +16,11 @@ class MelijnRatelimitingService(
     private val botApi = container.settings.botApi
     private val baseUrl = botApi.host
     override val service: RunnableTask = RunnableTask {
-        val melijnStat = container.webManager.getJsonNodeFromUrl(
+        val response = container.webManager.getResponseFromUrl(
             "$baseUrl/ratelimit",
             headers = mapOf("Authorization" to container.settings.tokens.melijnBackend)
         )
+        val melijnStat = response?.let { objectMapper.readTree(it) }
         if (melijnStat == null) {
             logger.warn("Failed to get melijn /ratelimit")
             return@RunnableTask
@@ -52,8 +53,7 @@ class MelijnRatelimitingService(
 
             influxDataSource.writeBatch(batchBuilder.build())
         } catch (t: Throwable) {
-            logger.info(melijnStat.toString())
-            t.printStackTrace()
+            logger.error("response: $response", t)
         }
     }
 }
