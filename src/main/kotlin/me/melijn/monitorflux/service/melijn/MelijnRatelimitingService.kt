@@ -46,7 +46,8 @@ class MelijnRatelimitingService(
             botCounts.forEach { (status, count) ->
                 batchBuilder.point(
                     Point.measurement("ratelimit_code")
-                        .addField("$status", count)
+                        .tag("status", status.toString())
+                        .addField("count", count)
                         .build()
                 )
             }
