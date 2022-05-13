@@ -145,20 +145,4 @@ class BotListApi(private val httpClient: HttpClient, val settings: Settings) {
             }
         }
     }
-
-    fun updateDiscordBoats(servers: Long) {
-        val token = settings.tokens.discordBoats
-        val url = "$DISCORD_BOATS/api/bot/${settings.botApi.id}"
-        if (token.isBlank()) return
-        TaskManager.asyncIgnoreEx {
-            val body = objectMapper.createObjectNode()
-                .put("server_count", servers)
-                .toString()
-
-            postBotStats(url) {
-                header("Authorization", token)
-                this.body = TextContent(body, ContentType.Application.Json)
-            }
-        }
-    }
 }
