@@ -22,9 +22,6 @@ class StatsService(
             val voice = melijnStat.shards.sumOf { it.listeningVoiceChannels.toLong() }
 
             botListApi.updateTopDotGG(guildArray) // 1s ratelimit
-//            botListApi.updateBotsOnDiscordXYZ(guildCount) // 2min ratelimit
-//            botListApi.updateBotlistSpace(guildArray) // 15s ratelimit
-            botListApi.updateDiscordBotListCom(guildCount, voice) // no
             botListApi.updateDiscordBotsGG(guildCount, melijnStat.shards.size.toLong()) // 0.05s ratelimit
             botListApi.updateDiscordsCom(guildCount) // no
 

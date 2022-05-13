@@ -8,7 +8,6 @@ import me.melijn.monitorflux.service.melijn.MelijnEventsInfoService
 import me.melijn.monitorflux.service.melijn.MelijnRatelimitingService
 import me.melijn.monitorflux.service.melijn.MelijnStatsInfoService
 import me.melijn.monitorflux.service.melijn.botlists.MelijnBFDInfoService
-import me.melijn.monitorflux.service.melijn.botlists.MelijnDBLComInfoService
 import me.melijn.monitorflux.service.melijn.botlists.MelijnTOPGGInfoService
 import me.melijn.monitorflux.service.statsposting.StatsService
 
@@ -21,7 +20,6 @@ class ServiceManager(container: Container, influxDataSource: InfluxDataSource) {
         MelijnEventsInfoService(container, influxDataSource),
         MelijnTOPGGInfoService(container, influxDataSource),
         MelijnBFDInfoService(container, influxDataSource),
-        MelijnDBLComInfoService(container, influxDataSource),
         MelijnRatelimitingService(container, influxDataSource),
         MelijnCommandsService(container),
         StatsService(BotListApi(container.webManager.httpClient, container.settings)),

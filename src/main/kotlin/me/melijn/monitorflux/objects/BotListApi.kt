@@ -14,12 +14,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 const val TOP_GG_URL = "https://top.gg"
-const val BOTS_ON_DISCORD_XYZ_URL = "https://bots.ondiscord.xyz"
-const val BOTLIST_SPACE = "https://api.botlist.space"
-const val DISCORD_BOT_LIST_COM = "https://discordbotlist.com"
 const val DISCORD_BOTS_GG = "https://discord.bots.gg"
 const val DISCORDS_COM = "https://discords.com"
-const val DISCORD_BOATS = "https://discord.boats"
 
 class BotListApi(private val httpClient: HttpClient, val settings: Settings) {
 
@@ -58,58 +54,6 @@ class BotListApi(private val httpClient: HttpClient, val settings: Settings) {
             logger.warn("Failed to post bot stats to: $url | serverresponse")
         } catch (t: SocketTimeoutException) {
             logger.warn("Failed to post bot stats to: $url | sockettimeout")
-        }
-    }
-
-    fun updateBotsOnDiscordXYZ(servers: Long) {
-        val token = settings.tokens.botsOnDiscordXYZ
-        val url = "$BOTS_ON_DISCORD_XYZ_URL/bot-api/bots/${settings.botApi.id}/guilds"
-        if (token.isBlank()) return
-        TaskManager.asyncIgnoreEx {
-            val body = objectMapper.createObjectNode()
-                .put("guildCount", "$servers")
-                .toString()
-
-            postBotStats(url) {
-                header("Authorization", token)
-                this.body = TextContent(body, ContentType.Application.Json)
-            }
-        }
-    }
-
-    fun updateBotlistSpace(serversArray: List<Long>) {
-        val token = settings.tokens.botlistSpace
-        val url = "$BOTLIST_SPACE/v1/bots/${settings.botApi.id}"
-        if (token.isBlank()) return
-        TaskManager.asyncIgnoreEx {
-            val arr = createJsonArr(serversArray)
-            val body = objectMapper.createObjectNode()
-                .set<ArrayNode>("shards", arr)
-                .toString()
-
-            postBotStats(url) {
-                header("Authorization", token)
-                this.body = TextContent(body, ContentType.Application.Json)
-            }
-        }
-    }
-
-    fun updateDiscordBotListCom(servers: Long, voice: Long) {
-        val token = settings.tokens.discordBotListCom
-        val url = "$DISCORD_BOT_LIST_COM/api/v1/bots/${settings.botApi.id}/stats"
-        if (token.isBlank()) return
-        TaskManager.asyncIgnoreEx {
-
-            val body = objectMapper.createObjectNode()
-                .put("guilds", servers)
-                .put("voice_connections", voice)
-                .toString()
-
-            postBotStats(url) {
-                header("Authorization", token)
-                this.body = TextContent(body, ContentType.Application.Json)
-            }
-            // Might break due to missing content-type header
         }
     }
 
